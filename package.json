@@ -1,0 +1,10 @@
+{
+  "name": "slingstar",
+  "version": "0.1.0",
+  "private": true,
+  "description": "One-input browser game: hold to tether, release to fling. Built for web game portals.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/"
+  }
+}
