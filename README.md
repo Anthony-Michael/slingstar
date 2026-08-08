@@ -22,10 +22,23 @@ Every constraint here comes from what portals actually accept.
 
 | Requirement | What it forced |
 |---|---|
-| Under 8 MB first playable (Poki) | Zero dependencies, zero build step, all art and audio generated procedurally. Ships at **39 KB** (14 KB gzipped) |
+| Under 8 MB first playable (Poki) | Zero dependencies, zero build step, all art and audio generated procedurally. Ships at **42 KB** (15 KB gzipped) |
 | Fun inside ten seconds, no tutorial | One input. The wind-up meter and the visibly-tightening tether teach the mechanic without a word of instruction |
 | Portrait, mobile-first (CrazyGames) | 540×960 design space, letterboxed to any screen, one thumb, `touch-action: none` |
 | No 1:1 clones (Poki) | Familiar swing-and-release genre, but stars are a consumable resource — that's the part that's ours |
+
+### The opening is unloseable
+
+Playtesting turned up the obvious beginner failure: tap instead of hold, fling
+yourself at minimum spin, die before understanding anything. "No tutorial" is a
+portal requirement, but the answer to that is forgiving design, not letting new
+players die to a control they haven't learned yet.
+
+So a run **opens already in orbit**. You're attached from the first frame,
+turning slowly. The star doesn't burn and the collapse doesn't rise until you
+let go, so the opening cannot be lost no matter how long you take. The prompt
+teaches one half of the control at a time — `HOLD`, then `LET GO` once you're
+winding up.
 
 ### The orbit is powered, not a pendulum
 
@@ -70,11 +83,16 @@ nothing else, so entire runs can be played headlessly in node.
 npm test
 ```
 
-52 tests, no dependencies. The one that matters most is the reference pilot in
+56 tests, no dependencies. The one that matters most is the reference pilot in
 `test/pilot.js` — it plays using only what a person can see, and the suite
 asserts it climbs on every seed. If that fails, the mechanic is broken and no
-amount of art will save it. Current spread across twelve seeds: **65m worst,
-120m median, 191m best**, over runs of 10–40 seconds.
+amount of art will save it. Current spread across sixteen seeds: **109m worst,
+289m median, 505m best**, over runs of 10–19 seconds.
+
+Balance is unusually sensitive to two numbers, and the pilot is how they get
+tuned: `CAMERA_LOOKAHEAD` (how much room you have to fall and still recover) and
+`MAX_HORIZONTAL_STEP` (how far the level generator may zigzag). Both had values
+that produced seeds the pilot simply could not get past.
 
 ## Running it
 

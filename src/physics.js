@@ -79,7 +79,7 @@ export function attach(body, star) {
  * Wind the orbit up. Angular speed climbs toward MAX_SPIN for as long as you
  * hold on, and linear speed is capped so a wide orbit can't outrun the camera.
  */
-export function stepOrbit(orbit, dt) {
+export function stepOrbit(orbit, dt, winding = true) {
   // Draw in toward the standard orbit, so however you arrived, the circle you
   // end up flying is the same one every time.
   const step = REEL_SPEED * dt
@@ -87,9 +87,11 @@ export function stepOrbit(orbit, dt) {
     ? Math.max(ORBIT_RADIUS, orbit.r - step)
     : Math.min(ORBIT_RADIUS, orbit.r + step)
 
+  // `winding` off means the orbit coasts at its current speed — used before the
+  // run starts, so the opening orbit turns invitingly without charging up.
   const direction = orbit.omega < 0 ? -1 : 1
-  const spun = Math.min(MAX_SPIN, Math.abs(orbit.omega) + SPIN_ACCEL * dt)
-  const capped = Math.min(spun, MAX_SPEED / r)
+  const target = winding ? Math.abs(orbit.omega) + SPIN_ACCEL * dt : Math.abs(orbit.omega)
+  const capped = Math.min(target, MAX_SPIN, MAX_SPEED / r)
   const omega = direction * capped
   return { r, omega, theta: orbit.theta + omega * dt }
 }

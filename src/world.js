@@ -5,7 +5,7 @@ export const WORLD_WIDTH = 540 // portrait play area; the camera scales to fit
 export const BAND_HEIGHT = 180 // vertical spacing between star bands
 // Keep stars far enough in that a full orbit around one still fits on screen.
 export const EDGE_MARGIN = 130
-export const MAX_HORIZONTAL_STEP = 170 // guarantees the next star stays reachable
+export const MAX_HORIZONTAL_STEP = 140 // guarantees the next star stays reachable
 export const START_Y = 0
 
 /** Deterministic PRNG (mulberry32) — small, fast, good enough for level layout. */

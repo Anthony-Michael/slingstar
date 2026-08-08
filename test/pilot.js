@@ -7,18 +7,20 @@ import { TETHER_RANGE, GRAVITY, dist, orbitSpeed } from '../src/physics.js'
 
 /** Returns an input function to feed to `update`. */
 export function makePilot({ aim = 0.9 } = {}) {
-  let lastBand = -1
+  // High-water mark, not the last star touched: dropping back to a lower star
+  // is a recovery, not a change of plan, and the goal is still upward.
+  let highest = -1
 
   return function pilot(state) {
     const { player, tether } = state
 
-    // Always heading for the lowest star still above the last one used.
+    // Always heading for the lowest star still above everything reached so far.
     const target = state.stars
-      .filter(s => s.charge > 0 && s.band > lastBand)
+      .filter(s => s.charge > 0 && s.band > highest)
       .sort((a, b) => a.band - b.band)[0]
 
     if (tether) {
-      lastBand = tether.star.band
+      highest = Math.max(highest, tether.star.band)
       if (!target) return { holding: false }
 
       const gap = dist(player.x, player.y, target.x, target.y)
@@ -34,12 +36,12 @@ export function makePilot({ aim = 0.9 } = {}) {
       return { holding: !(aimed && orbitSpeed(tether.orbit) >= Math.max(500, needed)) }
     }
 
-    // Airborne: grab whatever is in reach. A real player who misses their jump
-    // takes the star they can get rather than falling to their death.
-    return {
-      holding: state.stars.some(
-        s => s.charge > 0 && dist(player.x, player.y, s.x, s.y) <= TETHER_RANGE,
-      ),
-    }
+    // Airborne: reach for the next star up, but take anything within range once
+    // falling — a real player who misses their jump grabs what they can get
+    // rather than riding it all the way down.
+    const inReach = s => s.charge > 0 && dist(player.x, player.y, s.x, s.y) <= TETHER_RANGE
+    const climbing = state.stars.some(s => s.band > highest && inReach(s))
+    const falling = player.vy > 0
+    return { holding: climbing || (falling && state.stars.some(inReach)) }
   }
 }

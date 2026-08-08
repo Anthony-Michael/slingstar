@@ -87,9 +87,11 @@ function syncUi() {
   ui.meter.style.transform = `scaleX(${windFraction(state)})`
 
   if (state.phase === 'ready') {
+    // The prompt follows what they've actually done, so the two halves of the
+    // control are taught one at a time instead of both at once.
     ui.overlay.dataset.show = 'ready'
-    ui.title.textContent = 'HOLD'
-    ui.detail.textContent = 'hold to swing · let go to fly'
+    ui.title.textContent = state.armed ? 'LET GO' : 'HOLD'
+    ui.detail.textContent = state.armed ? 'release to fly' : 'hold to wind up'
   } else if (state.phase === 'dead') {
     ui.overlay.dataset.show = 'dead'
     ui.title.textContent = `${state.height}m`
@@ -118,7 +120,10 @@ function step(dt, holding) {
     sfx.milestone()
   }
 
-  if (before.phase === 'ready' && state.phase === 'playing') gameplayStart()
+  if (before.phase === 'ready' && state.phase === 'playing') {
+    gameplayStart()
+    sfx.fling(windFraction(before))
+  }
 
   if (state.phase === 'dead' && before.phase !== 'dead') {
     gameplayStop()
