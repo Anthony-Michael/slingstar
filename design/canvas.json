@@ -1,0 +1,86 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 720,
+      "title": "Portal cover — 1280×720"
+    },
+    {
+      "file": "OGCard.dc.html",
+      "x": 1380,
+      "y": 0,
+      "w": 1200,
+      "h": 630,
+      "title": "OG card — 1200×630"
+    },
+    {
+      "file": "Icon.dc.html",
+      "x": 0,
+      "y": 880,
+      "w": 512,
+      "h": 512,
+      "title": "App icon — 512×512"
+    },
+    {
+      "file": "IconSizes.dc.html",
+      "x": 612,
+      "y": 880,
+      "w": 820,
+      "h": 548,
+      "title": "Favicon legibility check"
+    },
+    {
+      "file": "Screen.dc.html",
+      "x": 1612,
+      "y": 880,
+      "w": 540,
+      "h": 960,
+      "title": "Screenshot 1 — mid-climb"
+    },
+    {
+      "file": "ScreenOpen.dc.html",
+      "x": 2252,
+      "y": 880,
+      "w": 540,
+      "h": 960,
+      "title": "Screenshot 2 — the opening"
+    },
+    {
+      "file": "ScreenPressure.dc.html",
+      "x": 2892,
+      "y": 880,
+      "w": 540,
+      "h": 960,
+      "title": "Screenshot 3 — the collapse closing in"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "pack",
+      "x": 0,
+      "y": -230,
+      "w": 620,
+      "text": "Slingstar submission art\n\nEverything a CrazyGames or Poki form asks for, in the game’s own palette:\ngold → ember stars, cyan player, crimson collapse, #05040f void.\n\nExport each board as PNG from the toolbar."
+    },
+    {
+      "id": "shots",
+      "x": 1612,
+      "y": 1900,
+      "w": 620,
+      "text": "The three screenshots are real frames — a headless run with the reference pilot, drawn with render.js’s own values. Nothing here is an artist’s impression of the game."
+    },
+    {
+      "id": "favicon",
+      "x": 612,
+      "y": 1400,
+      "w": 480,
+      "text": "Favicon check: the mark has to survive 16px, where the orbit ring and tether drop out and only the gold core and cyan dot carry it."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
