@@ -35,6 +35,10 @@ let clock = 0
 let wasTethered = false
 let lastMilestone = 0
 let deadAt = 0
+// Module-local, deliberately NOT read off the debug hook: the page shares its
+// global namespace with whatever a portal injects, and a loop that dereferences
+// a global every frame dies permanently the moment something clobbers it.
+let paused = false
 
 /** Fit the 540×960 design space into whatever window we were given. */
 function resize() {
@@ -141,7 +145,7 @@ function frame(now) {
   lastTime = now
   clock += elapsed
 
-  if (window.__slingstar.pause) {
+  if (paused) {
     present()
     requestAnimationFrame(frame)
     return
@@ -191,7 +195,12 @@ window.__slingstar = {
   },
   restart,
   /** Freeze the live loop so a scripted state can be inspected or captured. */
-  pause: false,
+  get pause() {
+    return paused
+  },
+  set pause(value) {
+    paused = Boolean(value)
+  },
   sim(frames, holding) {
     for (let i = 0; i < frames; i++) {
       step(STEP, holding)
